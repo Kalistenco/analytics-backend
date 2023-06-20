@@ -9,6 +9,8 @@ const app_port = 5000;
 const options = {
     credentials: true,
     origin: ["http://localhost:3000","https://localhost:3000","https://kalistenco.github.io/analytics/","http://kalistenco.github.io/analytics/"],
+    methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+    allowedHeaders: ['Content-Type']
   };
 
 app.use(cors(options));
