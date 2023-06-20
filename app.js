@@ -33,13 +33,13 @@ app.post('/', (req, res) => {
                 'timestamp': new Date()
             }));
             res.status(200);
+            res.end()
         });
     } catch (error) {
         res.status(500);
         res.send('Error:', error);
         console.log('Error:', error);
     }
-    console.log("????")
 });
 
 app.listen(app_port, (error) => {
