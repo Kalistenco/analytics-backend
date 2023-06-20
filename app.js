@@ -44,6 +44,7 @@ app.post('/', (req, res) => {
     }
 });
 
+app.options("*", cors(options));
 app.listen(app_port, (error) => {
     if (!error) {
         console.log("Server is Successfully Running, and App is listening on port " + app_port)
