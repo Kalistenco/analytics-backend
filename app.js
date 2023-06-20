@@ -13,7 +13,7 @@ const options = {
     allowedHeaders: ['Content-Type']
   };
 
-app.use(cors(options));
+app.use(cors());
 
 const json = require('json-bigint');
 const host = '15.229.178.29';
