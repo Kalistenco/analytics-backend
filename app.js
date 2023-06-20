@@ -6,7 +6,12 @@ const app = express();
 var cors = require('cors');
 const app_port = 5000;
 
-app.use(cors());
+const options = {
+    credentials: true,
+    origin: ["http://localhost:3000","https://localhost:3000","https://kalistenco.github.io/analytics/","http://kalistenco.github.io/analytics/"],
+  };
+
+app.use(cors(options));
 
 const json = require('json-bigint');
 const host = '15.229.178.29';
