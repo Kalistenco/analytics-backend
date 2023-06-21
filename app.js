@@ -19,11 +19,12 @@ const ws_port = '8080';
 const endpoint = '/analytics';
 const url = `ws://${host}:${ws_port}${endpoint}`;
 
+app.get('/', (req, res) => {
+    res.status(200);
+    res.send("Holis")
+})
+
 app.post('/', (req, res) => {
-    res.header("Access-Control-Allow-Origin", '*');
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
     try {
         const socket = new WebSocket(url);
         const client = webstomp.over(socket);
