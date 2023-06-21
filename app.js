@@ -9,9 +9,7 @@ const app_port = 5000;
 const options = {
     credentials: true,
     origin: ["http://localhost:3000","https://localhost:3000","https://kalistenco.github.io/analytics/","http://kalistenco.github.io/analytics/"],
-    methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-    allowedHeaders: ['Content-Type']
-  };
+};
 
 app.use(cors());
 
@@ -22,6 +20,10 @@ const endpoint = '/analytics';
 const url = `ws://${host}:${ws_port}${endpoint}`;
 
 app.post('/', (req, res) => {
+    res.header("Access-Control-Allow-Origin", '*');
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
     try {
         const socket = new WebSocket(url);
         const client = webstomp.over(socket);
