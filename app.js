@@ -6,12 +6,12 @@ const app = express();
 var cors = require('cors');
 const app_port = 5000;
 
-const options = {
-    credentials: true,
-    origin: ["http://localhost:3000","https://localhost:3000","https://kalistenco.github.io/analytics/","http://kalistenco.github.io/analytics/"],
-};
+// const options = {
+//     credentials: true,
+//     origin: ["http://localhost:3000","https://localhost:3000","https://kalistenco.github.io/analytics/","http://kalistenco.github.io/analytics/"],
+// };
 
-app.use(cors());
+// app.use(cors());
 
 const json = require('json-bigint');
 const host = '15.229.178.29';
@@ -46,7 +46,7 @@ app.post('/', (req, res) => {
     }
 });
 
-app.options("*", cors(options));
+// app.options("*", cors(options));
 app.listen(app_port, (error) => {
     if (!error) {
         console.log("Server is Successfully Running, and App is listening on port " + app_port)
