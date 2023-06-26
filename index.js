@@ -1,14 +1,14 @@
 const express = require('express');
 const WebSocket = require('websocket').w3cwebsocket;
 const webstomp = require('webstomp-client');
-const cors = require('cors');
+// const cors = require('cors');
 
 const app = express();
 const app_port = 5000;
 
-app.use(cors({
-    origin: '*'
-}));
+// app.use(cors({
+//     origin: '*'
+// }));
 app.use(express.json());
 
 const json = require('json-bigint');
