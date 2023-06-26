@@ -1,9 +1,15 @@
 const express = require('express');
 const WebSocket = require('websocket').w3cwebsocket;
 const webstomp = require('webstomp-client');
+const cors = require('cors');
 
 const app = express();
 const app_port = 5000;
+
+app.use(cors({
+    origin: '*'
+}));
+app.use(express.json());
 
 const json = require('json-bigint');
 const host = '15.229.178.29';
@@ -14,6 +20,12 @@ const url = `ws://${host}:${ws_port}${endpoint}`;
 function parseJwt(token) {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
 }
+
+const emailRead = "nalkhelaifi@deliver.ar.com";
+const passwordRead = "admin";
+
+const emailNone = " @psg.com";
+const passwordNone = "1234";
 
 app.get('/', (req, res) => {
     res.status(200);
@@ -46,7 +58,10 @@ app.post('/', (req, res) => {
     }
 });
 
-app.post('login', (req, res) => {
+app.post('/login', (req, res) => {
+
+    console.log("REQ", req.body)
+
     const email = req.body.email;
     const password = req.body.password;
 
@@ -65,38 +80,60 @@ app.post('login', (req, res) => {
                     'timestamp': new Date()
                 }
             }));
-            client.subscribe('/topic/backoffice', (message) => {
-                console.log("RECEIVED MESSAGE: ", message.body);
-                try {
-                    const value = message.body.replace(/'/g, '"');
-                    const data = json.parse(value);
-                    console.log("RECEIVED DATA: ", data);
-                    if (data && data.payload && data.payload.operation === "LOGIN") {
-                        if (data.payload.data && data.payload.data.result === "success") {
-                            const parsedToken = parseJwt(data.payload.data.token);
-                            console.log("PARSED TOKEN: ", parsedToken);
-                            if (parsedToken) {
-                                res.send({
-                                    'permissions': parsedToken.permisos
-                                });
-                                res.status(200);
-                                res.end();
-                            } else {
-                                res.status(500);
-                                res.send("Error: sin permisos");
-                                res.end();
-                            }
-                        } else if (data.payload.data && data.payload.data.result === "error") {
-                            res.status(500);
-                            res.end();
-                        }
-                    };
-                } catch (error) {
-                    res.status(500);
-                    res.send('Error:', error);
-                    console.log('Error:', error);
-                }
-            });
+
+            console.log("EMAIL: ", email)
+            console.log("PASSWORD", password)
+
+            if (email === emailRead && password === passwordRead) {
+                res.send({
+                    'permissions': "report:read"
+                });
+                res.status(200);
+                res.end();
+            } else if (email === emailNone && password === passwordNone) {
+                res.send({
+                    'permissions': ""
+                });
+                res.status(200);
+                res.end();
+            } else {
+                res.status(500);
+                res.end();
+            }
+
+
+            // client.subscribe('/topic/backoffice', (message) => {
+            //     console.log("RECEIVED MESSAGE: ", message.body);
+            //     try {
+            //         const value = message.body.replace(/'/g, '"');
+            //         const data = json.parse(value);
+            //         console.log("RECEIVED DATA: ", data);
+            //         if (data && data.payload && data.payload.operation === "LOGIN") {
+            //             if (data.payload.data && data.payload.data.result === "success") {
+            //                 const parsedToken = parseJwt(data.payload.data.token);
+            //                 console.log("PARSED TOKEN: ", parsedToken);
+            //                 if (parsedToken) {
+            //                     res.send({
+            //                         'permissions': parsedToken.permisos
+            //                     });
+            //                     res.status(200);
+            //                     res.end();
+            //                 } else {
+            //                     res.status(500);
+            //                     res.send("Error: sin permisos");
+            //                     res.end();
+            //                 }
+            //             } else if (data.payload.data && data.payload.data.result === "error") {
+            //                 res.status(500);
+            //                 res.end();
+            //             }
+            //         };
+            //     } catch (error) {
+            //         res.status(500);
+            //         res.send('Error:', error);
+            //         console.log('Error:', error);
+            //     }
+            // });
         })
     } catch (error) {
         res.status(500);
@@ -113,35 +150,3 @@ app.listen(app_port, (error) => {
         console.log("Error occurred, server can't start", error);
     }
 });
-
-// const WebSocket = require('websocket').w3cwebsocket;
-// const webstomp = require('webstomp-client');
-// const json = require('json-bigint');
-// const host = '15.229.178.29';
-// const port = '8080';
-// const endpoint = '/analytics';
-// const url = `ws://${host}:${port}${endpoint}`;
-// console.log('WebSocket URL:', url);
-// try {
-// const socket = new WebSocket(url);
-// const client = webstomp.over(socket);
-// client.connect({}, () => {
-// console.log('STOMP WebSocket connected');
-// client.subscribe('/topic/business', (message) => {
-// console.log('Received message:', message.body);
-// try {
-// const value = message.body.replace(/'/g, '"');
-// const data = json.parse(value);
-// console.log(data);
-// } catch (error) {
-// console.log('Error:', error);
-// }
-// });
-// client.send('/app/send/analytics', 'hello from Node.js');
-// // const data = prompt('Press enter to exit');
-// // client.disconnect();
-// // socket.close();
-// });
-// } catch (error) {
-// console.log('Error:', error);
-// }
