@@ -141,6 +141,10 @@ app.post('/login', (req, res) => {
     }
 });
 
+app.options('/*', (_, res) => {
+    res.sendStatus(200);
+});
+
 app.listen(app_port, (error) => {
     if (!error) {
         console.log("Server is Successfully Running, and App is listening on port " + app_port)
