@@ -27,12 +27,12 @@ const passwordRead = "admin";
 const emailNone = " @psg.com";
 const passwordNone = "1234";
 
-app.get('/', (req, res) => {
-    res.status(200);
-    res.send("Holis")
-})
+// app.get('/', (req, res) => {
+//     res.status(200);
+//     res.send("Holis")
+// })
 
-app.post('/', (req, res) => {
+app.get('/', (req, res) => {
     try {
         const socket = new WebSocket(url);
         const client = webstomp.over(socket);
@@ -58,7 +58,7 @@ app.post('/', (req, res) => {
     }
 });
 
-app.post('/login', (req, res) => {
+app.post('/', (req, res) => {
 
     console.log("REQ", req.body)
 
@@ -141,9 +141,6 @@ app.post('/login', (req, res) => {
     }
 });
 
-app.options('/*', (_, res) => {
-    res.sendStatus(200);
-});
 
 app.listen(app_port, (error) => {
     if (!error) {
