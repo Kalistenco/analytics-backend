@@ -24,7 +24,7 @@ function parseJwt(token) {
 const emailRead = "nalkhelaifi@deliver.ar.com";
 const passwordRead = "admin";
 
-const emailNone = " @psg.com";
+const emailNone = "sergioramos@psg.com";
 const passwordNone = "1234";
 
 // app.get('/', (req, res) => {
