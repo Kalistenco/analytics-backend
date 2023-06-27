@@ -12,7 +12,11 @@ try {
     client.connect({}, () => {
         console.log('STOMP WebSocket connected');
         client.subscribe('/topic/business', (message) => {
-            console.log('Received message:', message.body);
+            console.log('Received message from business:', message.body);
+
+        });
+        client.subscribe('/topic/analytics', (message) => {
+            console.log('Received message from analytics:', message.body);
             try {
                 const value = message.body.replace(/'/g, '"');
                 const data = json.parse(value);
@@ -21,10 +25,6 @@ try {
                 console.log('Error:', error);
             }
         });
-        client.send('/app/send/analytics', 'hello from Node.js');
-        // const data = prompt('Press enter to exit');
-        // client.disconnect();
-        // socket.close();
     });
 } catch (error) {
     console.log('Error:', error);
